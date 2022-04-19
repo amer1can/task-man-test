@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db-taskman:
+    image: mongo:latest
+    container_name: db-taskman
+    restart: always
+    ports:
+      - '27018:27017'
+    volumes:
+      - ./mongodb:/data/db
+    command: --wiredTigerCacheSizeGB 1.5
+  api-taskman:
+    image: amer1candocker/mytop-demo
+    container_name: api-taskman
+    restart: always
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./.env:/app/.env
+    links:
+      - db-taskman
+#  front:
+#    image: amer1candocker/mytop-demo-front
+#    container_name: front
+#    ports:
+#      - '8089:8081'
+#    depends_on:
+#      - api
+
