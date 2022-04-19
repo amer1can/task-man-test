@@ -2,12 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Validation
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TaskService } from "../task/task.service";
+import { IdValidationPipe } from "../pipes/id-validation.pipe";
 
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService,
               private readonly taskService: TaskService,
-              ) {}
+  ) {}
 
   @UsePipes(new ValidationPipe())
   @Post('create')
@@ -21,13 +22,13 @@ export class TagController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.tagService.findById(id);
   }
 
   @Delete(':id')
   //удаляем тег, а также во всех Tasks в которых он есть
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', IdValidationPipe) id: string) {
     //получаем его имя по id
     const tagName = await this.tagService.findById(id).then(res => res.name)
     //получаем массив всех объектов где он встречается
@@ -44,7 +45,7 @@ export class TagController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: CreateTagDto) {
+  update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateTagDto) {
     return this.tagService.update(id, dto);
   }
 }

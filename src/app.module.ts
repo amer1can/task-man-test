@@ -17,7 +17,7 @@ import { getMongoConfig } from "./configs/mongo.config";
 
     }),
     TaskModule,
-    TagModule
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
