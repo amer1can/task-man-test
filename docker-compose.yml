@@ -10,7 +10,7 @@ services:
       - ./mongodb:/data/db
     command: --wiredTigerCacheSizeGB 1.5
   api-taskman:
-    image: amer1candocker/task-man-back
+    image: amer1candocker/task-man-back:latest
     container_name: api-taskman
     restart: always
     ports:
