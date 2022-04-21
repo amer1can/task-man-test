@@ -44,6 +44,11 @@ export class TagController {
     return this.tagService.deleteById(id);
   }
 
+  @Delete('/delete/unused')
+  async deleteUnused() {
+    return this.tagService.deleteUnusedTags()
+  }
+
   @Patch(':id')
   update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateTagDto) {
     return this.tagService.update(id, dto);

@@ -3,10 +3,14 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { InjectModel } from "nestjs-typegoose";
 import { TaskModel } from "./task.model";
 import { ModelType, DocumentType } from "@typegoose/typegoose/lib/types";
+import { TagModel } from "../tag/tag.model";
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel(TaskModel) private readonly taskModel: ModelType<TaskModel>) {}
+  constructor(
+    @InjectModel(TaskModel) private readonly taskModel: ModelType<TaskModel>,
+    @InjectModel(TagModel) private readonly tagModel: ModelType<TagModel>
+  ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<DocumentType<TaskModel>> {
     // @ts-ignore

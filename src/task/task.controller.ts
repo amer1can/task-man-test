@@ -25,22 +25,7 @@ export class TaskController {
   @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() createTaskDto: CreateTaskDto) {
-    //получаем теги которые хотим добавить
-    const { tags } = createTaskDto
-    //получаем уже имеющиеся теги
-    const alreadyHasTags = await this.tagService.findAll()
-      .then(res => res.map(el => el.name))
-
-    //если добавляемого тега нет в нашей коллекции, то добавляем его
-    if(tags.length != 0) {
-      tags.forEach(el => {
-        if(!alreadyHasTags.includes(el)) {
-          this.tagService.create({name: el})
-        }
-      })
-    }
-
-    //создаем задачу
+    await this.tagService.updateTags(createTaskDto.tags)
     return this.taskService.create(createTaskDto);
   }
 
@@ -71,12 +56,13 @@ export class TaskController {
   }
 
   @Delete(':id')
-  remove(@Param('id', IdValidationPipe) id: string) {
+  async remove(@Param('id', IdValidationPipe) id: string) {
     return this.taskService.deleteById(id);
   }
 
   @Patch(':id')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateTaskDto) {
+    await this.tagService.updateTags(dto.tags)
     return this.taskService.updateById(id, dto);
   }
 }
